@@ -1,24 +1,24 @@
 {
   "products": [
     {
-      "id": 1,
-      "title": "Essence Mascara Lash Princess",
-      "description": "The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects.",
-      "category": "beauty",
-      "price": 9.99,
-      "stock": 99,
-      "brand": "Essence",
-      "image": "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp"
+      "id": "1234",
+      "title": "samsung s25 ultra",
+      "image": "https://images.unsplash.com/photo-1616410011236-7a42121dd981?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "Headphone",
+      "brand": "Samsung",
+      "stock": "23432",
+      "price": "12345678",
+      "description": "fgdfgdfgdfg"
     },
     {
-      "id": 3,
-      "title": "iphone 16 promax",
-      "description": "iphone terbaru dari apple",
-      "category": "electronic",
-      "price": 45.99,
-      "stock": 34,
-      "brand": "apple",
-      "image": "https://www.apple.com/v/iphone-16/f/images/overview/apple-intelligence/apple_intelligence_endframe__ewm1810mnb0i_xlarge.jpg"
+      "id": "2342",
+      "title": "56556",
+      "image": "https://images.unsplash.com/photo-1609921205586-7e8a57516512?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "Camera",
+      "brand": "Apple",
+      "stock": "234324",
+      "price": 24324,
+      "description": "sfsdfsfsd"
     }
   ]
 }

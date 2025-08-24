@@ -52,12 +52,16 @@ export default function DataTable() {
     navigate(`/productsView/${id}`);
   };
 
+  const handleEdit = (id) => {
+    navigate(`/productsEdit/${id}`);
+  };
+
   const handleAdd = () => {
     navigate("/productsAdd");
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 50 },
+    { field: "id", headerName: "ID", width: 100 },
     { field: "title", headerName: "Nama", width: 300 },
     {
       field: "image",
@@ -92,18 +96,16 @@ export default function DataTable() {
     {
       field: "brand",
       headerName: "Brand",
-      width: 200,
+      width: 150,
     },
     {
       field: "price",
       headerName: "Price",
-      type: "number",
       width: 150,
     },
     {
       field: "stock",
       headerName: "Stock",
-      type: "number",
       width: 150,
     },
     {
@@ -130,6 +132,7 @@ export default function DataTable() {
             <Button
               variant="contained"
               color="secondary"
+              onClick={() => handleEdit(params.row.id)}
               startIcon={<EditIcon />}
             >
               edit
@@ -168,7 +171,7 @@ export default function DataTable() {
           rows={products}
           columns={columns}
           initialState={{ pagination: { paginationModel } }}
-          pageSizeOptions={[10, 10]}
+          pageSizeOptions={[5, 10]}
           checkboxSelection
           showToolbar
           disableColumnResize={true}

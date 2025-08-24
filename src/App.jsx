@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
 import ProductsView from "./components/features/products/ProductView";
 import ProductsAdd from "./components/features/products/ProductAdd";
+import ProductsEdit from "./components/features/products/productEdit";
 import { Bounce, ToastContainer } from "react-toastify";
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="products" element={<Products />} />
           <Route path="productsView/:id" element={<ProductsView />} />
+          <Route path="productsEdit/:productID" element={<ProductsEdit />} />
           <Route path="productsAdd" element={<ProductsAdd />} />
         </Route>
       </Routes>

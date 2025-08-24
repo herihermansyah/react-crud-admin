@@ -40,9 +40,9 @@ export default function ProductsView() {
   return (
     <Card sx={{ height: "auto", width: "auto" }}>
       <CardActionArea disableTouchRipple sx={{ display: "flex", gap: 20 }}>
-        <CardContent>
+        <CardContent >
           <CardMedia
-            sx={{ height: 700 }}
+            sx={{ borderRadius: 5, minHeight: 500 , maxHeight: 800 }}
             component="img"
             image={product.image}
             alt={product.title}
