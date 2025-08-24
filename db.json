@@ -1,0 +1,24 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "Essence Mascara Lash Princess",
+      "description": "The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects.",
+      "category": "beauty",
+      "price": 9.99,
+      "stock": 99,
+      "brand": "Essence",
+      "image": "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp"
+    },
+    {
+      "id": 3,
+      "title": "iphone 16 promax",
+      "description": "iphone terbaru dari apple",
+      "category": "electronic",
+      "price": 45.99,
+      "stock": 34,
+      "brand": "apple",
+      "image": "https://www.apple.com/v/iphone-16/f/images/overview/apple-intelligence/apple_intelligence_endframe__ewm1810mnb0i_xlarge.jpg"
+    }
+  ]
+}
