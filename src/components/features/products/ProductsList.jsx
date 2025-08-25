@@ -11,55 +11,71 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import ErrorIcon from "@mui/icons-material/Error";
+import LoopIcon from "@mui/icons-material/Loop";
 
+// Komponen utama untuk menampilkan daftar produk
 export default function DataTable() {
+  // State untuk data produk, error, dan loading
   const [products, setProducts] = useState([]);
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Fungsi untuk mengambil data produk dari API
   const getProducts = async () => {
     try {
       const response = await axios.get("http://localhost:3000/products");
-      setProducts(response.data);
+      setProducts(response.data); // Set data produk
     } catch (error) {
-      console.log(error);
+      setError(error); // Set error jika gagal
+    } finally {
+      setLoading(false); // Set loading selesai
     }
   };
 
+  // Ambil data produk saat komponen pertama kali di-render
   useEffect(() => {
     getProducts();
   }, []);
 
+  // Fungsi untuk menghapus produk berdasarkan id
   const deleteProducts = async (id) => {
-    const isConfrim = confirm("are you sure ?");
+    const isConfrim = confirm("are you sure ?"); // Konfirmasi sebelum hapus
     if (isConfrim) {
       try {
         await axios.delete(`http://localhost:3000/products/${id}`);
-        getProducts();
+        getProducts(); // Refresh data setelah hapus
         toast.success("data berhasil di hapus");
       } catch (error) {
-        console.log(error);
+        setError(error);
       }
     } else {
       toast.error("data gagal di hapus");
     }
   };
 
+  // Handler untuk tombol hapus
   const handleDelete = (id) => {
     deleteProducts(id);
   };
 
+  // Handler untuk tombol view
   const handleRead = (id) => {
     navigate(`/productsView/${id}`);
   };
 
+  // Handler untuk tombol edit
   const handleEdit = (id) => {
     navigate(`/productsEdit/${id}`);
   };
 
+  // Handler untuk tombol tambah produk
   const handleAdd = () => {
     navigate("/productsAdd");
   };
 
+  // Definisi kolom untuk DataGrid
   const columns = [
     { field: "id", headerName: "ID", width: 100 },
     { field: "title", headerName: "Nama", width: 300 },
@@ -68,6 +84,7 @@ export default function DataTable() {
       headerName: "Image",
       width: 100,
       renderCell: (params) => {
+        // Render gambar produk
         return (
           <Box
             sx={{
@@ -112,6 +129,7 @@ export default function DataTable() {
       headerName: "Action",
       width: 350,
       renderCell: (params) => {
+        // Tombol aksi: view, edit, delete
         return (
           <Box
             sx={{
@@ -151,8 +169,34 @@ export default function DataTable() {
     },
   ];
 
+  // Model pagination awal
   const paginationModel = { page: 0, pageSize: 10 };
 
+  // Tampilkan error jika gagal load data
+  if (error)
+    return (
+      <div className="flex flex-col justify-center items-center mt-[15%] ">
+        <ErrorIcon
+          className="animate-spin"
+          fontSize="large"
+          color="error"
+        ></ErrorIcon>
+        <span className="animate-pulse">error load data.....</span>
+      </div>
+    );
+
+  // Tampilkan loading saat data sedang diambil
+  if (loading)
+    return (
+      <div className="flex flex-col justify-center items-center mt-[15%] ">
+        <LoopIcon className="animate-spin" fontSize="large">
+          className="animate-spin" fontSize="large" color="error"
+        </LoopIcon>
+        <span className="animate-pulse">load data.....</span>
+      </div>
+    );
+
+  // Render utama: tombol tambah dan tabel produk
   return (
     <Box>
       <Box sx={{ marginBottom: 2 }}>
@@ -176,6 +220,7 @@ export default function DataTable() {
           showToolbar
           disableColumnResize={true}
           sx={{ border: 0 }}
+          disableRowSelectionOnClick
         />
       </Paper>
     </Box>

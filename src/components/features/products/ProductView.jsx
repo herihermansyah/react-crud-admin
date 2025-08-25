@@ -40,9 +40,9 @@ export default function ProductsView() {
   return (
     <Card sx={{ height: "auto", width: "auto" }}>
       <CardActionArea disableTouchRipple sx={{ display: "flex", gap: 20 }}>
-        <CardContent >
+        <CardContent>
           <CardMedia
-            sx={{ borderRadius: 5, minHeight: 500 , maxHeight: 800 }}
+            sx={{ borderRadius: 5, minHeight: 500, maxHeight: 800 }}
             component="img"
             image={product.image}
             alt={product.title}
@@ -77,7 +77,12 @@ export default function ProductsView() {
             >
               back
             </Button>
-            <Button variant="contained" color="secondary" size="large">
+            <Button
+              onClick={() => navigate(`/productsEdit/${id}`)}
+              variant="contained"
+              color="secondary"
+              size="large"
+            >
               edit
             </Button>
           </Box>

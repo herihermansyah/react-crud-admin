@@ -11,9 +11,15 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import ErrorIcon from "@mui/icons-material/Error";
+import LoopIcon from "@mui/icons-material/Loop";
 import { toast } from "react-toastify";
 
+// Komponen utama untuk edit produk
 const ProductEdit = () => {
+  // State untuk error, loading, dan data produk
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState(true);
   const [id, setId] = useState();
   const [title, setTitle] = useState();
   const [image, setImage] = useState(null);
@@ -24,41 +30,45 @@ const ProductEdit = () => {
   const [description, setDescription] = useState();
   const navigate = useNavigate();
 
-  const { productID } = useParams();
+  // Ambil parameter ID dari URL
+  const { edit_ID } = useParams();
 
-  // --- Perbaikan Logika: Mengambil data produk saat komponen dimuat ---
+  // Ambil data produk saat komponen mount
   useEffect(() => {
     const fetchProductData = async () => {
       try {
+        // Request data produk dari backend
         const response = await axios.get(
-          `http://localhost:3000/products/${productID}`
+          `http://localhost:3000/products/${edit_ID}`
         );
         const product = response.data;
-
-        // Mengisi state dengan data dari API
+        // Set data produk ke state
         setId(product.id);
         setTitle(product.title);
         setImage(product.image);
         setCategory(product.category);
         setBrand(product.brand);
         setStock(product.stock);
+        // Format harga ke format lokal
         setPrice(product.price ? product.price.toLocaleString("id-ID") : "");
         setDescription(product.description);
       } catch (error) {
-        console.error("Error fetching product data:", error);
-        toast.error("Gagal memuat data produk.");
+        // Tampilkan error jika gagal
+        toast.error(`Gagal memuat data produk.${error}`);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProductData();
-  }, [productID]);
-  // --- Akhir Perbaikan Logika ---
+  }, [edit_ID]);
 
+  // Fungsi untuk handle submit edit produk
   const handleEditProduct = async (e) => {
-    // Mengganti nama fungsi agar lebih jelas
     e.preventDefault();
     try {
+      // Bersihkan format harga sebelum dikirim ke backend
       const cleanPrice = Number(price.replace(/\./g, ""));
-      const response = await axios.put(`http://localhost:3000/products/${id}`, {
+      await axios.put(`http://localhost:3000/products/${id}`, {
         id,
         title,
         image,
@@ -68,22 +78,50 @@ const ProductEdit = () => {
         price: cleanPrice,
         description,
       });
-      console.log(response);
       toast.success("data berhasil di edit");
+      // Redirect ke halaman produk setelah edit
       navigate("/products");
     } catch (error) {
-      console.log(error);
-      toast.error("Gagal mengedit produk.");
+      setError(error);
+      toast.error(`Gagal mengedit produk.${error}`);
+    } finally {
+      setLoading(false);
     }
   };
 
+  // Tampilkan error jika ada
+  if (error)
+    return (
+      <div className="flex flex-col justify-center items-center mt-[15%] ">
+        <ErrorIcon
+          className="animate-spin"
+          fontSize="large"
+          color="error"
+        ></ErrorIcon>
+        <span className="animate-pulse">error load data.....</span>
+      </div>
+    );
+
+  // Tampilkan loading spinner saat data dimuat
+  if (loading)
+    return (
+      <div className="flex flex-col justify-center items-center mt-[15%] ">
+        <LoopIcon className="animate-spin" fontSize="large">
+          className="animate-spin" fontSize="large" color="error"
+        </LoopIcon>
+        <span className="animate-pulse">load data.....</span>
+      </div>
+    );
+
+  // Form edit produk
   return (
     <Container>
       <Box
-        onSubmit={handleEditProduct} // Menggunakan fungsi edit yang benar
+        onSubmit={handleEditProduct} // Fungsi submit edit
         component="form"
         sx={{ display: "flex", flexDirection: "column", gap: 2 }}
       >
+        {/* Input ID produk, hanya bisa 4 digit dan disabled */}
         <TextField
           fullWidth
           variant="outlined"
@@ -91,7 +129,7 @@ const ProductEdit = () => {
           type="text"
           size="large"
           required
-          value={id || ""} // Menggunakan fallback value
+          value={id || ""}
           disabled
           onChange={(e) => {
             const value = e.target.value;
@@ -102,6 +140,7 @@ const ProductEdit = () => {
           helperText={id && id.length < 4 ? "ID harus 4 digit" : ""}
           error={id && id.length < 4}
         />
+        {/* Input nama produk */}
         <TextField
           fullWidth
           variant="outlined"
@@ -111,6 +150,7 @@ const ProductEdit = () => {
           value={title || ""}
           onChange={(e) => setTitle(e.target.value)}
         />
+        {/* Input URL gambar produk */}
         <TextField
           fullWidth
           variant="outlined"
@@ -121,6 +161,7 @@ const ProductEdit = () => {
           onChange={(e) => setImage(e.target.value)}
         />
 
+        {/* Pilihan kategori produk */}
         <FormControl>
           <InputLabel id="category-label">Category</InputLabel>
           <Select
@@ -138,6 +179,7 @@ const ProductEdit = () => {
             <MenuItem value="Camera">Camera</MenuItem>
           </Select>
         </FormControl>
+        {/* Pilihan brand produk */}
         <FormControl>
           <InputLabel id="Brand-label">Brand</InputLabel>
           <Select
@@ -157,6 +199,7 @@ const ProductEdit = () => {
           </Select>
         </FormControl>
 
+        {/* Input stok produk */}
         <TextField
           fullWidth
           variant="outlined"
@@ -167,6 +210,7 @@ const ProductEdit = () => {
           onChange={(e) => setStock(e.target.value)}
           required
         />
+        {/* Input harga produk, otomatis format ribuan */}
         <TextField
           fullWidth
           variant="outlined"
@@ -185,6 +229,7 @@ const ProductEdit = () => {
             setPrice(formattedValue);
           }}
         />
+        {/* Input deskripsi produk */}
         <TextField
           fullWidth
           multiline
@@ -195,6 +240,7 @@ const ProductEdit = () => {
           label="Description"
           size="large"
         />
+        {/* Tombol aksi */}
         <Box sx={{ marginTop: 2, display: "flex", gap: 2 }}>
           <Button
             onClick={() => navigate("/products")}
